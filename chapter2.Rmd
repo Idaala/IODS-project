@@ -1,6 +1,8 @@
-# Insert chapter 2 title here
+# Learning the basics
 
 *Describe the work you have done this week and summarize your learning.*
+*I have learned how to use the Github. More specifically, I have learned how to create my own Github repository. 
+You will create your own GitHub repository*
 
 - Describe your work and results clearly. 
 - Assume the reader has an introductory course level understanding of writing and reading R code as well as statistical methods.
