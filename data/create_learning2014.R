@@ -151,4 +151,3 @@ qqnorm(reg_model)
 
 #More or less points are closer to the straight line. Almost all points fall approximately along this straight line, so we can assume normality.
 #We can observe in plot 1 that values are reasonably widely distributed throughout the area, indicating that errors do not follow any pattern, as one would anticipate from a reasonable model. 
-

@@ -1,7 +1,9 @@
 
 # About the project and the course
 
-### I am expecting to learn the basics of Rstudio. I have no prior programming experience. https://github.com/Idaala/IODS-project
+### I expect to master the fundamentals of Rstudio. I've never done any programming before.I am now getting a master's degree in health economics and working on my master's thesis. 
+
+### My GitHub repository: https://github.com/Idaala/IODS-project
 
 ```{r}
 # This is a so-called "R chunk" where you can write R code.
