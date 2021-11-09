@@ -9,17 +9,18 @@ output:
     fig_caption: true
     fig_width: 6
     fig_height: 4
+    code_folding: hide
 ---
 
 ***
 
 # *Introduction to Open Data Science - Course Project*
 
-### Introduction to Open Data Science is a course for anyone interested in learning how to use RStudio, R Markdown, and GitHub (state-of-the-art data science tools) to visualize and analyze open data using multivariate statistical methods while adhering to reproducible research principles and practices. 
+Introduction to Open Data Science is a course for anyone interested in learning how to use RStudio, R Markdown, and GitHub (state-of-the-art data science tools) to visualize and analyze open data using multivariate statistical methods while adhering to reproducible research principles and practices. 
 
-### I expect to master the fundamentals of Rstudio. I've never done any programming before.I am now getting a master's degree in health economics and working on my master's thesis. 
+I expect to master the fundamentals of Rstudio. I've never done any programming before.I am now getting a master's degree in health economics and working on my master's thesis. 
 
-### My GitHub repository: https://github.com/Idaala/IODS-project
+My GitHub repository: https://github.com/Idaala/IODS-project
 
 ```{r child = "chapter1.Rmd"}
 # This will include Chapter 1 (that is updated in its own file) in the document.
