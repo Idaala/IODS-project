@@ -234,7 +234,6 @@ library(&quot;GGally&quot;)</code></pre>
 <h2>Regression model fitting</h2>
 <p>The scatterplotmatrix shows that attitude (0.436), stra (0.146), and surf (-0,144) have the strongest correlations with points.However, the correlation is much weaker for stra and surf compared to attitude. As a result, these variables will function as explanatory variables. Exam points are the target (dependent) variable in a regression model. The age distribution reveals that the majority of students are in their twenties, as one might expect.The gender distribution is skewed, with slightly more females than males enrolling in the course.</p>
 <pre class="r"><code>reg_model &lt;- lm(points ~ attitude + stra + surf, data = students2014)
-
 summary(reg_model) </code></pre>
 <pre><code>## 
 ## Call:

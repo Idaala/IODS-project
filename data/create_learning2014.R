@@ -1,9 +1,6 @@
 #Ida Alakörkkö, 7.11.2021
 #part 1 Data Wrangling (max 5p)
 
-
-
-
 learning2014_data <- read.table("http://www.helsinki.fi/~kvehkala/JYTmooc/JYTOPKYS3-data.txt", sep = "\t", header=TRUE)
 
 
@@ -24,7 +21,7 @@ learning2014_data$surf
 
 #Create deep, stra and surf
 
-deep_que <- c("D03", "D11", "D19", "D27", "D07", "D14", "D22", "D30","D07","D14","D22","D30")
+deep_que <- c("D03", "D11", "D19", "D27", "D07", "D14", "D22", "D30","D06",  "D15", "D23", "D31")
 surf_que <- c("SU02","SU10","SU18","SU26", "SU05","SU13","SU21","SU29","SU08","SU16","SU24","SU32")
 stra_que <- c("ST01","ST09","ST17","ST25","ST04","ST12","ST20","ST28")
 
