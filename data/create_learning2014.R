@@ -77,6 +77,7 @@ dim(students2014)
 summary(students2014)
 
 library(tidyverse)
+library(ggplot2)
 
 #in the summary, we can see that gender is a character variable. The rest of the variables are numeric. 
 
@@ -87,7 +88,15 @@ plot(students2014$attitude, students2014$points)
 
 plot(students2014$stra, students2014$points)
 
+p1 <- ggplot(students2014, aes(x = attitude, y = points))
 
+p2 <- p1 + geom_point()
+
+p2
+
+p3 <- p2 + geom_smooth(method = "lm")
+
+p3
 
 #It seems like a higher attitude results in higher scores. We can check the correlation between all the variables
 
@@ -143,8 +152,5 @@ summary(reg_model3)
 errors <- plot(reg_model, which= c(1,2,5), par(mfrow= c(2,2)))
 
 
-qqnorm(reg_model)
-
-
-#More or less points are closer to the straight line. Almost all points fall approximately along this straight line, so we can assume normality.
-#We can observe in plot 1 that values are reasonably widely distributed throughout the area, indicating that errors do not follow any pattern, as one would anticipate from a reasonable model. 
+#More or less points are closer to the straight line. Almost all points fall approximately along this straight line, so we can assume normality of the errors.
+#We can observe in plot 1 that values are are quite randomly distributed throughout the area, indicating that errors do not follow any pattern, as one would anticipate from a reasonable model. Additionally there are no extreme outliers.
