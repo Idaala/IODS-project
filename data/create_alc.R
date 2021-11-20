@@ -123,7 +123,26 @@ write.table(alc, file = "alc.csv", sep = "\t", col.names = TRUE)
 
 #Exercise 3. Analysis of the student performance including alcohol consumption
 
-alco <- read.csv("https://github.com/rsund/IODS-project/raw/master/data/alc.csv", sep = ",",header=TRUE)
+#Introduction
+
+#
+
+rm(list = ls())
+
+alc <- read.csv("https://github.com/rsund/IODS-project/raw/master/data/alc.csv", sep = ",",header=TRUE)
+
+glimpse(alc)
+
+names(alc)
+
+
+# Packages required by this script.
+library(dplyr)
+library(GGally)
+library(ggplot2)
+library(boot)
+
+
 
 
 

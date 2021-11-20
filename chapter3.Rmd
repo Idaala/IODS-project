@@ -1,0 +1,38 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Exercise 3. Analysis of the student performance including alcohol consumption
+## Introduction
+
+There are two datasets available for performance in two different subjects: mathematics (mat) and Portuguese language (por).The database was created using two types of data: school reports and surveys, with the latter being used to supplement the preceding data. In this excercise we use a joined dataset, that has been combined by averaging (including the grade variables). 
+
+To read the data in.
+
+```{r}
+alc <- read.csv("https://github.com/rsund/IODS-project/raw/master/data/alc.csv", sep = "," ,header=TRUE)
+#print variable names
+names(alc)
+
+```
+
+Student grades, demographic, socioeconomic, and school-related characteristics are among the data variables.
+Alcohol consumption is given special consideration, as is its potential impact on school performance.
+The daily and weekly alcohol consumption values are combined and averaged to create the variable alc use.
+The desired variable is alcohol consumption, which is a binary (low/high) variable. 
+
+
+##Four interesting variables to explain the alcohol consumption
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
