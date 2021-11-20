@@ -1,13 +1,5 @@
----
-title: "Untitled"
-output: html_document
----
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-#Exercise 3. Analysis of the student performance including alcohol consumption
+# Exercise 3. Analysis of the student performance including alcohol consumption
 ## Introduction
 
 There are two datasets available for performance in two different subjects: mathematics (mat) and Portuguese language (por).The database was created using two types of data: school reports and surveys, with the latter being used to supplement the preceding data. In this excercise we use a joined dataset, that has been combined by averaging (including the grade variables). 
@@ -15,6 +7,11 @@ There are two datasets available for performance in two different subjects: math
 To read the data in.
 
 ```{r}
+
+library(dplyr)
+library(GGally)
+library(ggplot2)
+library(boot)
 alc <- read.csv("https://github.com/rsund/IODS-project/raw/master/data/alc.csv", sep = "," ,header=TRUE)
 #print variable names
 names(alc)
@@ -27,12 +24,74 @@ The daily and weekly alcohol consumption values are combined and averaged to cre
 The desired variable is alcohol consumption, which is a binary (low/high) variable. 
 
 
-##Four interesting variables to explain the alcohol consumption
+## Four interesting variables to explain the alcohol consumption
 
-You can also embed plots, for example:
+The goal of the analysis is to look at the links between high and low alcohol intake and some of the other data variables.
+I chose four explanatory variables that could be markers of alcohol intake. The variables I chose are shown below.
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+1. absences - number of school absences (numeric: from 0 to 93): Alcohol consumption may lead to more absences 
+2. goout - going out with friends (numeric: from 1 - very low to 5 - very high): Students who go out more may consume more alcohol
+3. health - current health status (numeric: from 1 - very bad to 5 - very good): Alcohol consumption may affect health
+4. G3 - final grade (numeric: from 0 to 20, output target): Students who consumer more alcohol may get poorer results. 
+
+```{r}
+#absence
+g1 <- ggplot(alc, aes(x = high_use, y = absences, col = sex))
+g1 + geom_boxplot() + ggtitle("Student absences by alcohol consumption and sex")
+
+cor(alc$absences,alc$high_use)
+
+#goout
+
+g2 <- ggplot(data = alc, aes(x = high_use, y=goout, col = sex))
+g2 + geom_boxplot() + xlab("high_use")
+
+cor(alc$goout,alc$high_use)
+
+
+#health
+g3 <- ggplot(data = alc, aes(x = high_use, y=health, col = sex))
+g3 + geom_boxplot() + xlab("high_use")
+
+cor(alc$health,alc$high_use)
+
+#Final grade
+g4 <- ggplot(data = alc, aes(G3))
+g4 + geom_bar(aes(fill = high_use), stat="count", position = "dodge2") + xlab('G3')
+
+cor(alc$high_use,alc$G3)
+
 ```
+
+Students that consume a lot of alcohol appear to have greater absences, especially for men who consume a lot of alcohol. Additionally, it seems like students who use more alcohol go out more with their friends. However, alcohol does not seem to affect perceived health, but it looks like females who don't consume alcohol seem to have lower perceived health. It would also appear that students who consume alcohol have a bit lower grade point average, but it is hard to evaluate that from the plot. The correlation test strengthens these assumptions. 
+
+
+# Logistic regression analysis
+
+The four assumptioms described before appeared to be eligible, at least to some extent, based on the summary and images above.
+The next stage is to do a statistical analysis of the association between my chosen explanatory factors and the binary high-or low-alcohol intake variable as the goal variable, using logistic regression. 
+
+```{r}
+m <- glm(high_use ~  + health + goout + absences + G3, data = alc, family = "binomial")
+
+summary(m)
+
+coef(m)
+```
+
+The fitted model's summary shows that alcohol use has a relatively strong link with all other variables except G3 final grade outcomes and health. Alcohol intake is well explained by going out with friends, and the frequency of school absences, and the findings are statistically significant. 
+
+The next step is to present and interpret the coefficients of the model as odds ratios.
+
+```{r}
+OR <- exp(coef(m))
+OR
+
+CI <-exp(confint(m))
+cbind(OR, CI)
+```
+
+If the odds is higher than 1, it means that the more alcohol is consumed. If the student goes out a lot with friends, he/she is two times likely to consume more alcohol. Additionally, A student who has a lot of absences is 1.07 times more likely to consume more alcohol. Surprisingly, a student who has a better health is 1.16 times more likely to consume alcohol.
+
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

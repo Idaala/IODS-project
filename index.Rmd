@@ -32,6 +32,9 @@ My GitHub repository: https://github.com/Idaala/IODS-project
 ```
 
 ***
+```{r child = "chapter3.Rmd"}
 
+```
+***
 (more chapters to be added similarly as we proceed with the course!)
 

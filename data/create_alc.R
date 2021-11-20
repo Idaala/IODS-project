@@ -145,7 +145,35 @@ library(boot)
 
 
 
+g2 <- ggplot(alc, aes(x = high_use, y = absences, col = sex))
 
 
+g2 + geom_boxplot() + ggtitle("Student absences by alcohol consumption and sex")
+
+g2 <- ggplot(data = alc, aes(x = high_use, y=goout, col = sex))
+g2 + geom_boxplot() + xlab("high_use")
+
+g3 <- ggplot(data = alc, aes(x = high_use, y=health, col = sex))
+g3 + geom_boxplot() + xlab("high_use")
+
+g4 <- ggplot(data = alc, aes(G3))
+g4 + geom_bar(aes(fill = high_use), stat="count", position = "dodge2") + xlab('G3')
 
 
+cor(alc$absences,alc$high_use)
+
+cor(alc$health,alc$high_use)
+
+cor(alc$goout,alc$high_use)
+
+cor(alc$high_use,alc$G3)
+
+m <- glm(high_use ~  + health + goout + absences + G3, data = alc, family = "binomial")
+
+summary(m)
+
+OR <- exp(coef(m))
+OR
+
+CI <-exp(confint(m))
+cbind(OR, CI)
