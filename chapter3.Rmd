@@ -94,3 +94,5 @@ cbind(OR, CI)
 If the odds are more than one, the more alcohol is consumed. If a student goes out with his or her friends frequently, he or she is twice as likely to consume more alcohol. A student with a high number of absences is also 1.07 times more likely to drink more alcohol.
 Surprisingly, a student in good health is 1.16 times more likely to drink alcohol. Health, on the other hand, was not statistically significant, and the confidence interval included 0. The confidence interval for G3 passes 1, indicating that there is no difference. 
 
+# Prediction of the model
+
