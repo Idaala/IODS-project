@@ -4,6 +4,8 @@
 
 There are two datasets available for performance in two different subjects: mathematics (mat) and Portuguese language (por).The database was created using two types of data: school reports and surveys, with the latter being used to supplement the preceding data. In this excercise we use a joined dataset, that has been combined by averaging (including the grade variables). 
 
+Reference: Data source:P. Cortez and A. Silva. Using Data Mining to Predict Secondary School Student Performance. In A. Brito and J. Teixeira Eds., Proceedings of 5th FUture BUsiness TEChnology Conference (FUBUTEC 2008) pp. 5-12, Porto, Portugal, April, 2008, EUROSIS, ISBN 978-9077381-39-7.
+
 To read the data in.
 
 ```{r}
