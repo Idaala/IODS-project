@@ -205,8 +205,9 @@ names(alc)</code></pre>
 ## [51] &quot;cid&quot;</code></pre>
 <p>Student grades, demographic, socioeconomic, and school-related characteristics are among the data variables. Alcohol consumption is given special consideration, as is its potential impact on school performance. The daily and weekly alcohol consumption values are combined and averaged to create the variable alc use. The desired variable is alcohol consumption, which is a binary (low/high) variable.</p>
 </div>
-<div id="four-interesting-variables-to-explain-the-alcohol-consumption" class="section level2">
-<h2>Four interesting variables to explain the alcohol consumption</h2>
+</div>
+<div id="four-interesting-variables-to-explain-the-alcohol-consumption" class="section level1">
+<h1>Four interesting variables to explain the alcohol consumption</h1>
 <p>The goal of the analysis is to look at the links between high and low alcohol intake and some of the other data variables. I chose four explanatory variables that could be markers of alcohol intake. The variables I chose are shown below.</p>
 <ol style="list-style-type: decimal">
 <li>absences - number of school absences (numeric: from 0 to 93): Alcohol consumption may lead to more absences</li>
@@ -240,7 +241,6 @@ g4 + geom_bar(aes(fill = high_use), stat=&quot;count&quot;, position = &quot;dod
 <pre class="r"><code>cor(alc$high_use,alc$G3)</code></pre>
 <pre><code>## [1] -0.1316722</code></pre>
 <p>Students that consume a lot of alcohol appear to have greater absences, especially for men who consume a lot of alcohol. Additionally, it seems like students who use more alcohol go out more with their friends. However, alcohol does not seem to affect perceived health. It would also appear that students who consume alcohol have a bit lower grade point average, but it is hard to evaluate that from the plot. The correlation test strengthens these assumptions.</p>
-</div>
 </div>
 <div id="logistic-regression-analysis" class="section level1">
 <h1>Logistic regression analysis</h1>
@@ -362,8 +362,9 @@ table(high_use = alc$high_use, prediction = alc$prediction) %&gt;% prop.table %&
 ##    FALSE 0.63783784 0.06216216 0.70000000
 ##    TRUE  0.17567568 0.12432432 0.30000000
 ##    Sum   0.81351351 0.18648649 1.00000000</code></pre>
-<div id="proportion-of-inaccurately-classified-individuals-the-training-error" class="section level2">
-<h2>Proportion of inaccurately classified individuals (= the training error)</h2>
+</div>
+<div id="proportion-of-inaccurately-classified-individuals-the-training-error" class="section level1">
+<h1>Proportion of inaccurately classified individuals (= the training error)</h1>
 <p>We can compute the average amount of wrong predictions since we know how to make predictions with our model. First define a loss function (mean prediction error)</p>
 <pre class="r"><code>loss_func = function(class, prob) {
   n_wrong = abs(class - prob) &gt; 0.5
@@ -374,8 +375,8 @@ loss_func(class = alc$high_use, prob = alc$probability)</code></pre>
 <pre><code>## [1] 0.2378378</code></pre>
 <p>The training error is 23.7%, implying that the model’s accuracy is somewhat higher than 76%. The precision isn’t great, but as we’ve seen, my selection of explanatory factors wasn’t perfect either. Because only few explanatory variables were statistically significant, the findings from the guessing technique were no better.</p>
 </div>
-<div id="cross-validation-bonus-task" class="section level2">
-<h2>Cross validation (bonus task)</h2>
+<div id="cross-validation-bonus-task" class="section level1">
+<h1>Cross validation (bonus task)</h1>
 <p>Cross validation is a method of testing a predictive model on unseen data. In cross-validation, the value of a penalty (loss) function (mean prediction error) is computed on data not used for finding the model. Low value = good.</p>
 <pre class="r"><code>loss_func &lt;- function(class, prob) {
   n_wrong &lt;- abs(class - prob) &gt; 0.5
@@ -387,9 +388,8 @@ loss_func(class = alc$high_use, prob = alc$probability)</code></pre>
 <pre class="r"><code>library(boot)
 cv &lt;- cv.glm(data = alc, cost = loss_func, glmfit = m, K = 10)
 cv$delta[1]</code></pre>
-<pre><code>## [1] 0.2405405</code></pre>
+<pre><code>## [1] 0.2432432</code></pre>
 <p>The average number of wrong predictions of my model were lower than in DataCamp (which had about 0.26 error). Indicating that my model was better.</p>
-</div>
 </div>
 
 

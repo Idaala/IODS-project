@@ -1,6 +1,6 @@
 #Ida Alakörkkö, 19.11.2021, This data approach student achievement in secondary education of two Portuguese schools.
 #Data source:P. Cortez and A. Silva. Using Data Mining to Predict Secondary School Student Performance. In A. Brito and J. Teixeira Eds., Proceedings of 5th FUture BUsiness TEChnology Conference (FUBUTEC 2008) pp. 5-12, Porto, Portugal, April, 2008, EUROSIS, ISBN 978-9077381-39-7.
-
+# Data wrangling
 math <- read.csv("student-mat.csv", sep = ";",header=TRUE)
 
 por <- read.csv("student-por.csv", sep = ";",header=TRUE)
@@ -123,9 +123,9 @@ write.table(alc, file = "alc.csv", sep = "\t", col.names = TRUE)
 
 #Exercise 3. Analysis of the student performance including alcohol consumption
 
-#Introduction
+#Introduction.
 
-#
+
 
 rm(list = ls())
 
@@ -177,3 +177,52 @@ OR
 
 CI <-exp(confint(m))
 cbind(OR, CI)
+
+
+m <- glm(high_use ~ failures + absences + sex, data = alc, family = "binomial")
+
+
+m1 <- glm(high_use ~ failures + absences + sex, data = alc, family = "binomial")
+
+probabilities <- predict(m1, type = "response")
+probabilities <- predict(m, type = "response")
+
+# add the predicted probabilities to 'alc'
+alc <- mutate(alc, probability = probabilities)
+
+# use the probabilities to make a prediction of high_use
+alc <- mutate(alc, prediction = probability > 0.5)
+
+# see the last ten original classes, predicted probabilities, and class predictions
+select(alc, failures, absences, sex, high_use, probability, prediction) %>% tail(10)
+
+# tabulate the target variable versus the predictions
+table(high_use = alc$high_use, prediction = alc$prediction)
+
+
+m <- glm(high_use ~ goout + absences, data = alc, family = "binomial")
+summary(m)
+cbind(exp(coef(m)), exp(confint(m)))
+
+probabilities <- predict(m, type = "response")
+# Add the predicted probabilities to 'alc'
+alc <- mutate(alc, probability = probabilities)
+# Use the probabilities to make a prediction of high_use
+alc <- mutate(alc, prediction = probability > 0.5)
+# Tabulate the target variable versus the predictions
+tbl <- table(high_use = alc$high_use, prediction = alc$prediction)
+addmargins(tbl)
+round(addmargins(prop.table(tbl)), 2)
+
+
+g <- ggplot(alc, aes(x = probability, y = high_use, col = prediction))
+
+# define the geom as points and draw the plot
+g + geom_point()
+
+# tabulate the target variable versus the predictions
+table(high_use = alc$high_use, prediction = alc$prediction) %>% prop.table %>% addmargins
+
+
+g = ggplot(alc, aes(x = probability, y = high_use, col=prediction))
+g+geom_point()
