@@ -65,7 +65,7 @@ dim(pormath)
 
 str(pormath)
 
-#pormath contains 370 students and 51 variables
+#pormath contains 370 students and 51 variables. 
 
 colnames(pormath)
 
@@ -98,9 +98,14 @@ for(column_name in notjoined_columns) {
 }
 
 # glimpse at the new combined data
+
 glimpse(alc)
 
-# access the 'tidyverse' packages dplyr and ggplot2
+structure(alc)
+
+dim(alc)
+
+# access talcerse' packages dplyr and ggplot2
 library(dplyr); library(ggplot2)
 
 

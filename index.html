@@ -212,7 +212,7 @@ pre code {
 <pre class="r"><code># This is a so-called &quot;R chunk&quot; where you can write R code.
 
 date()</code></pre>
-<pre><code>## [1] &quot;Sun Nov 21 17:09:51 2021&quot;</code></pre>
+<pre><code>## [1] &quot;Sun Nov 21 17:11:38 2021&quot;</code></pre>
 <p>The text continues here.</p>
 <hr />
 </div>
@@ -409,6 +409,7 @@ summary(reg_model3) </code></pre>
 <div id="introduction-1" class="section level2">
 <h2>Introduction</h2>
 <p>There are two datasets available for performance in two different subjects: mathematics (mat) and Portuguese language (por).The database was created using two types of data: school reports and surveys, with the latter being used to supplement the preceding data. In this excercise we use a joined dataset, that has been combined by averaging (including the grade variables).</p>
+<p>Reference: Data source:P. Cortez and A. Silva. Using Data Mining to Predict Secondary School Student Performance. In A. Brito and J. Teixeira Eds., Proceedings of 5th FUture BUsiness TEChnology Conference (FUBUTEC 2008) pp. 5-12, Porto, Portugal, April, 2008, EUROSIS, ISBN 978-9077381-39-7.</p>
 <p>To read the data in.</p>
 <pre class="r"><code>library(dplyr)</code></pre>
 <pre><code>## 
@@ -621,7 +622,7 @@ loss_func(class = alc$high_use, prob = alc$probability)</code></pre>
 <pre class="r"><code>library(boot)
 cv &lt;- cv.glm(data = alc, cost = loss_func, glmfit = m, K = 10)
 cv$delta[1]</code></pre>
-<pre><code>## [1] 0.2513514</code></pre>
+<pre><code>## [1] 0.2378378</code></pre>
 <p>The average number of wrong predictions of my model were lower than in DataCamp (which had about 0.26 error). Indicating that my model was better. *** (more chapters to be added similarly as we proceed with the course!)</p>
 </div>
 
