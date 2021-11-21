@@ -24,14 +24,14 @@ The daily and weekly alcohol consumption values are combined and averaged to cre
 The desired variable is alcohol consumption, which is a binary (low/high) variable. 
 
 
-## Four interesting variables to explain the alcohol consumption
+# Four interesting variables to explain the alcohol consumption
 
 The goal of the analysis is to look at the links between high and low alcohol intake and some of the other data variables.
 I chose four explanatory variables that could be markers of alcohol intake. The variables I chose are shown below.
 
 1. absences - number of school absences (numeric: from 0 to 93): Alcohol consumption may lead to more absences 
 2. goout - going out with friends (numeric: from 1 - very low to 5 - very high): Students who go out more may consume more alcohol
-3. health - current health status (numeric: from 1 - very bad to 5 - very good): Alcohol consumption may affect health
+3. health - current health status (numeric: from 1 - very bad to 5 - very good): Alcohol consumption may affect health negatively.
 4. G3 - final grade (numeric: from 0 to 20, output target): Students who consumer more alcohol may get poorer results. 
 
 ```{r}
@@ -63,12 +63,12 @@ cor(alc$high_use,alc$G3)
 
 ```
 
-Students that consume a lot of alcohol appear to have greater absences, especially for men who consume a lot of alcohol. Additionally, it seems like students who use more alcohol go out more with their friends. However, alcohol does not seem to affect perceived health, but it looks like females who don't consume alcohol seem to have lower perceived health. It would also appear that students who consume alcohol have a bit lower grade point average, but it is hard to evaluate that from the plot. The correlation test strengthens these assumptions. 
+Students that consume a lot of alcohol appear to have greater absences, especially for men who consume a lot of alcohol. Additionally, it seems like students who use more alcohol go out more with their friends. However, alcohol does not seem to affect perceived health. It would also appear that students who consume alcohol have a bit lower grade point average, but it is hard to evaluate that from the plot. The correlation test strengthens these assumptions. 
 
 
 # Logistic regression analysis
 
-The four assumptioms described before appeared to be eligible, at least to some extent, based on the summary and images above.
+The four assumptions described before appeared to be suitable except for health and G3, based on the summary and images above.
 The next stage is to do a statistical analysis of the association between my chosen explanatory factors and the binary high-or low-alcohol intake variable as the goal variable, using logistic regression. 
 
 ```{r}
@@ -91,8 +91,79 @@ CI <-exp(confint(m))
 cbind(OR, CI)
 ```
 
-If the odds are more than one, the more alcohol is consumed. If a student goes out with his or her friends frequently, he or she is twice as likely to consume more alcohol. A student with a high number of absences is also 1.07 times more likely to drink more alcohol.
-Surprisingly, a student in good health is 1.16 times more likely to drink alcohol. Health, on the other hand, was not statistically significant, and the confidence interval included 0. The confidence interval for G3 passes 1, indicating that there is no difference. 
+If the odds are more than one, the more alcohol is consumed. If a student goes out with his or her friends frequently, he or she is twice as likely to consume more alcohol. A student with a high number of absences is also 1.07 times more likely to drink more alcohol. Surprisingly, a student in good health is 1.16 times more likely to drink alcohol. Health, on the other hand, was not statistically significant, and the confidence interval included 0. The confidence interval for G3 passes 1, indicating that there is no difference. 
 
 # Prediction of the model
 
+The new fitted model is created and calculated by removing variable G3 and health, because they were not statistically significant
+
+```{r}
+m <- glm(high_use ~ goout + absences, data = alc, family = "binomial")
+summary(m)
+cbind(exp(coef(m)), exp(confint(m)))
+```
+
+The statistics above show that the new model contains explanatory variables that are statistically significant. The confidence intervals show that the model can be used for predictions.
+
+```{r}
+probabilities <- predict(m, type = "response")
+# Add the predicted probabilities to 'alc'
+alc <- mutate(alc, probability = probabilities)
+# Use the probabilities to make a prediction of high_use
+alc <- mutate(alc, prediction = probability > 0.5)
+# Tabulate the target variable versus the predictions
+tbl <- table(high_use = alc$high_use, prediction = alc$prediction)
+addmargins(tbl)
+round(addmargins(prop.table(tbl)), 2)
+```
+
+According to survey results, 30% of students consume excessive amounts of alcohol.According to the model, the proportion will be 18%.
+Graphics can demonstrate this: 
+
+```{r}
+g <- ggplot(alc, aes(x = probability, y = high_use, col = prediction))
+
+# define the geom as points and draw the plot
+g + geom_point()
+
+# tabulate the target variable versus the predictions
+table(high_use = alc$high_use, prediction = alc$prediction) %>% prop.table %>% addmargins
+
+```
+
+# Proportion of inaccurately classified individuals (= the training error)
+
+We can compute the average amount of wrong predictions since we know how to make predictions with our model. First define a loss function (mean prediction error)
+
+```{r}
+loss_func = function(class, prob) {
+  n_wrong = abs(class - prob) > 0.5
+  mean(n_wrong)
+}
+
+loss_func(class = alc$high_use, prob = alc$probability)
+```
+
+The training error is 23.7%, implying that the model's accuracy is somewhat higher than 76%.
+The precision isn't great, but as we've seen, my selection of explanatory factors wasn't perfect either. Because only few explanatory variables were statistically significant, the findings from the guessing technique were no better. 
+
+# Cross validation (bonus task)
+
+Cross validation is a method of testing a predictive model on unseen data. In cross-validation, the value of a penalty (loss) function (mean prediction error) is computed on data not used for finding the model. Low value = good.
+
+
+```{r}
+loss_func <- function(class, prob) {
+  n_wrong <- abs(class - prob) > 0.5
+  mean(n_wrong)
+}
+
+loss_func(class = alc$high_use, prob = alc$probability)
+
+library(boot)
+cv <- cv.glm(data = alc, cost = loss_func, glmfit = m, K = 10)
+cv$delta[1]
+
+```
+
+The average number of wrong predictions of my model were lower than in DataCamp (which had about 0.26 error). Indicating that my model was better.
