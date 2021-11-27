@@ -1,0 +1,39 @@
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# **Exercise 4. Clustering and classification**
+
+The data used in this exercise comprises the housing values in the suburbs of Boston. The Boston data frame has 506 rows and 14 variables. 
+
+```{r}
+library(magrittr)
+library(MASS)
+library(ggplot2)
+library(tidyr)
+library(corrplot)
+library(GGally)
+
+
+data("Boston")
+str(Boston)
+summary(Boston)
+
+
+
+#graphical overview
+cor_matrix<-cor(Boston) %>% round(digits = 2)
+
+# print the correlation matrix
+cor_matrix
+
+# visualize the correlation matrix
+corrplot(cor_matrix, method="circle", type="upper", cl.pos="b", tl.pos="d", tl.cex = 0.6)
+```
+
+From the summary we can see that the variables are numerical. The chas variable is a dummy variable. From the graph we can see that the variable distributions are skewed. However the variable rm 
+
+The correlation matrix shows the associations between the variables. The bigger and more colorful the circle is, the stronger the correlation is between the variables. There appears to be a strong positive relationship between property taxes (tax) and radial highway accessibility (rad). The lower status of the population (istat) and median value of owner-occupied homes in $1000s (medv) have a strong negative association. Additionally, strong negative association is between proportion of owner-occupied units built prior to 1940 (age) and weighted mean of distances to five Boston employment centres (dis).
+
