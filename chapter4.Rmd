@@ -6,7 +6,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # **Exercise 4. Clustering and classification**
 
-The data used in this exercise comprises the housing values in the suburbs of Boston. The Boston data frame has 506 rows and 14 variables. 
+The data used in this exercise comprises the housing values in the suburbs of Boston. The Boston data frame has 506 rows and 14 variables. More information can be found: https://stat.ethz.ch/R-manual/R-devel/library/MASS/html/Boston.html
 
 ```{r}
 library(magrittr)
@@ -153,6 +153,8 @@ The model accurately anticipated the highest crime rates. The total number of co
 
 ## Reloading the Boston dataset and standardizing the dataset
 
+
+
 ```{r}
 # Reload Boston dataset.
 data("Boston")
@@ -167,16 +169,42 @@ summary(dist_eu)
 ```
 
 
+## Clustering
+
+The data will next be clustered using k-means. There are four classes in our LDA model that would be a good place to start. One way to decide the optimal number of clusters is to look how cluster sum of squares (WCSS) behaves when the number of cluster changes. The optimal number of clusters is when the total WCSS drops radically.
+
+```{r}
+set.seed(123)
+
+# determine the number of clusters
+k_max <- 10
+
+# calculate the total within sum of squares
+twcss <- sapply(1:k_max, function(k){kmeans(Boston, k)$tot.withinss})
+
+# visualize the results
+qplot(x = 1:k_max, y = twcss, geom = 'line')
+```
+
+We can see that the WCSS drops radically in the case of 2 clusters. 
+
+
 ```{r}
 
 # k-means clustering
-km <-kmeans(Boston, centers = 3)
+km <-kmeans(Boston, centers = 2)
 
 # plot the Boston dataset with clusters
 pairs(Boston, col = km$cluster)
+#correlation
+cor_matrixx<-cor(boston_scaled) %>% round(digits = 2)
+
+# print the correlation matrix
+cor_matrixx
+
+# visualize the correlation matrix
+corrplot(cor_matrixx, method="circle", type="upper", cl.pos="b", tl.pos="d", tl.cex = 0.6)
+
+
 ```
-
-
-```{r}
-```
-
+The ideal number of clusters when utilizing euclidian distance appears to be two. We can see that rad and tax are correlated with Per capita crime rate by town (crime) (positive correlation). Also it seems like istat is somewhat correlated with crime rates. It is intuitive as people who have a lower status may commit more crimes. Because the rad and tax are so closely linked, it's difficult to tell what fosters crime in a certain area: strong connections or wealth as measured by taxes. It is a bit hard to evaluate these correlations. 
