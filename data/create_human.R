@@ -67,4 +67,58 @@ glimpse(human)
 write.table(human, file = "human.csv", sep = "\t", col.names = TRUE)
 
 
-rm(list = ls())
+
+#RStudio Exercise 5
+#Some more data wrangling 
+
+human <- read.table("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/human1.txt", sep  =",", header = T)
+
+# look at the (column) names of human
+names(human)
+
+# look at the structure of human
+str(human)
+dim(human)
+
+# print out summaries of the variables
+summary(human)
+
+#HDI stands for human development index. The variables have been named shorter and more descriptive. 
+
+# Transform the Gross National Income (GNI) variable to numeric
+human <- mutate(human, GNI = as.numeric(str_replace(human$GNI, pattern=",", replace ="")))
+
+#Exclude unneeded variables
+
+# columns to keep
+keep <- c("Country", "Edu2.FM", "Labo.FM", "Life.Exp", "Edu.Exp", "GNI", "Mat.Mor", "Ado.Birth", "Parli.F")
+
+# select the 'keep' columns
+human <- select(human, one_of(keep))
+
+# print out a completeness indicator of the 'human' data
+complete.cases(human)
+
+# print out the data along with a completeness indicator as the last column
+data.frame(human[-1], comp = complete.cases(human))
+
+# Other way to dealing with not available (NA) values
+human1 <- filter(human, complete.cases(human))
+
+#Remove the observations which relate to regions instead of countries
+
+last <- nrow(human) - 7
+
+# Choose everything until the last 7 observations
+human <- human[1:last, ]
+
+#Define the row names of the data by the country names and remove the country name column from the data
+rownames(human) <- human$Country
+human <- select(human, -Country)
+
+#dataset human contains 155 observations and 8 variables.
+
+#save the data
+write.table(human, file = "human.csv", sep = "\t", col.names = TRUE)
+
+
