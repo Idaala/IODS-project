@@ -1,3 +1,7 @@
+#Ida Alakörkkö
+#Original link to data source: http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/human1.txt
+#The HDI was created to emphasize that people and their capabilities should be the ultimate criteria for assessing the development of a country, not economic growth alone
+
 # read data
 
 hd <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/human_development.csv", stringsAsFactors = F)
@@ -63,4 +67,4 @@ glimpse(human)
 write.table(human, file = "human.csv", sep = "\t", col.names = TRUE)
 
 
-
+rm(list = ls())
