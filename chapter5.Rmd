@@ -83,3 +83,14 @@ biplot(pca_human, choices = 1:2, cex = c(0.8, 1), col = c("grey40", "deeppink2")
 ## PCA on standardized human data 
 
 
+```{r}
+human_std <- scale(human)
+
+# print out summaries of the standardized variables
+summary(human_std)
+
+# perform principal component analysis (with the SVD method)
+pca_human <- prcomp(human_std)
+
+```
+
