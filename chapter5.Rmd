@@ -1,0 +1,85 @@
+## # **Exercise 5. Dimensionality reduction techniques**
+
+
+
+
+
+
+```{r}
+library("ggplot2")                     
+library("GGally")
+library("corrplot")
+human <- read.table("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/human2.txt", sep  =",", header = T)
+
+```
+
+
+```{r}
+str(human)
+ggpairs(human, upper = list(continuous = wrap('cor', size = 2)))
+
+
+```
+The variables are:
+
+Edu2.FM: Ratio of females to males educated at secondary and higher education levels
+
+Labo.FM: Ratio of females to males labour market participation rate (LFPR)
+
+Edu.Exp: Expected years of schooling
+
+Life.Exp: Life expectancy at birth (years)
+
+GNI: Gross national income per capita (GNI)
+
+Mat.Mor: Maternal mortality ratio (MMR) (deaths per 100 000 live births)
+
+Ado.Birth: Adolescent birth rate (ABR) (births per 1 000 women ages 15-19)
+
+Parli.F: Share of parliamentary seats held by women (% of seats)
+
+
+We can see from the plot that the variables (some) are quite normally distributed. However, mat.mor and Ado.Birth are heavily tailed. Some of the variables have a strong correlation. For instance Maternal mortality ratio (Mat.Mor) is highly correlated with life expectancy at birth (Life.Exp), which is quite intuitive. Expected years of schooling and Life expectancy at birth are also very correlated.
+
+
+## Dimensionality reduction with principal component analysis (PCA) non standardized data 
+
+uncorrelated variables. The first PC captures more than 70 5 of the total variance in the original variables.
+
+```{r}
+pca_human <- prcomp(human)
+s <- summary(pca_human)
+pca_pr <- round(1*s$importance[2, ], digits = 5)
+
+```
+
+
+```{r}
+# create object pc_lab to be used as axis labels
+paste0(names(pca_pr), " (", pca_pr, "%)")
+# draw a biplot
+biplot(pca_human, cex = c(0.8, 1), col = c("grey40", "deeppink2"), xlab = NA, ylab = NA)
+```
+
+
+The first component accounts for 99.99 % of the variation. 
+
+```{r}
+
+# standardize the variables
+human_std <- scale(human)
+
+# print out summaries of the standardized variables
+summary(human_std)
+
+# perform principal component analysis (with the SVD method)
+pca_human <- prcomp(human_std)
+
+# draw a biplot of the principal component representation and the original variables
+biplot(pca_human, choices = 1:2, cex = c(0.8, 1), col = c("grey40", "deeppink2"))
+```
+
+
+## PCA on standardized human data 
+
+
