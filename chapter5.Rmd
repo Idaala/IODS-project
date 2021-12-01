@@ -2,9 +2,6 @@
 
 
 
-
-
-
 ```{r}
 library("ggplot2")                     
 library("GGally")
@@ -16,10 +13,11 @@ human <- read.table("http://s3.amazonaws.com/assets.datacamp.com/production/cour
 
 ```{r}
 str(human)
+summary(human)
 ggpairs(human, upper = list(continuous = wrap('cor', size = 2)))
 
-
 ```
+
 The variables are:
 
 Edu2.FM: Ratio of females to males educated at secondary and higher education levels
@@ -39,45 +37,35 @@ Ado.Birth: Adolescent birth rate (ABR) (births per 1 000 women ages 15-19)
 Parli.F: Share of parliamentary seats held by women (% of seats)
 
 
-We can see from the plot that the variables (some) are quite normally distributed. However, mat.mor and Ado.Birth are heavily tailed. Some of the variables have a strong correlation. For instance Maternal mortality ratio (Mat.Mor) is highly correlated with life expectancy at birth (Life.Exp), which is quite intuitive. Expected years of schooling and Life expectancy at birth are also very correlated.
+We can see from the plot that the variables (some) are quite normally distributed. However, mat.mor and Ado.Birth are heavily tailed. Some of the variables have a strong correlation. For instance Maternal mortality ratio (Mat.Mor) is highly correlated with life expectancy at birth (Life.Exp), which is quite intuitive. Additionally, it seems like the higher the mothers’ mortal rate is the lower the expected education levels. Expected years of schooling and Life expectancy at birth are also very correlated.
+
+Further information can be found in: http://hdr.undp.org/en/content/human-development-index-hdi
 
 
 ## Dimensionality reduction with principal component analysis (PCA) non standardized data 
 
-uncorrelated variables. The first PC captures more than 70 5 of the total variance in the original variables.
+
 
 ```{r}
 pca_human <- prcomp(human)
 s <- summary(pca_human)
-pca_pr <- round(1*s$importance[2, ], digits = 5)
-
+s
+# rounded percetanges of variance captured by each PC
+pca_pr <- round(100*s$importance[2,], digits = 1) 
+pca_pr
 ```
 
 
 ```{r}
 # create object pc_lab to be used as axis labels
-paste0(names(pca_pr), " (", pca_pr, "%)")
+pc_lab <- paste0(names(pca_pr), " (", pca_pr, "%)")
+
 # draw a biplot
-biplot(pca_human, cex = c(0.8, 1), col = c("grey40", "deeppink2"), xlab = NA, ylab = NA)
+biplot(pca_human, cex = c(0.8, 1), col = c("grey40", "deeppink2"), xlab = pc_lab[1], ylab = pc_lab[2])
 ```
 
 
-The first component accounts for 99.99 % of the variation. 
-
-```{r}
-
-# standardize the variables
-human_std <- scale(human)
-
-# print out summaries of the standardized variables
-summary(human_std)
-
-# perform principal component analysis (with the SVD method)
-pca_human <- prcomp(human_std)
-
-# draw a biplot of the principal component representation and the original variables
-biplot(pca_human, choices = 1:2, cex = c(0.8, 1), col = c("grey40", "deeppink2"))
-```
+The first component accounts for 100 % of the variation. A small angle indicates high correlation. GNI appears to explain the majority of the first primary component. 
 
 
 ## PCA on standardized human data 
@@ -90,7 +78,33 @@ human_std <- scale(human)
 summary(human_std)
 
 # perform principal component analysis (with the SVD method)
-pca_human <- prcomp(human_std)
+pca_human1 <- prcomp(human_std)
+
+s2 <- summary(pca_human1)
+s2
 
 ```
+
+We can see that the proportion of the variance is more equally distributed. 
+
+
+```{r}
+pca_pr1 <- round(100*s2$importance[2,], digits = 1) 
+# print out the percentages of variance
+pca_pr1
+
+```
+
+The components now explain the data in a much more varied way. The first one accounts for 53% of the variance.
+
+```{r}
+# create object pc_lab to be used as axis labels
+pc_lab1 <- paste0(names(pca_pr1), " (", pca_pr1, "%)")
+
+biplot(pca_human1, cex = c(0.8, 1), col = c("grey40", "deeppink2"), xlab = pc_lab1[1], ylab = pc_lab1[2])
+
+```
+
+
+The outcomes are distinctive. There are about 4 or 5 important components after scaling. Most of the discrepancies, I believe, are due to scaling and standardizing the data. If factors have a wide range of scale units, data normalization is required for PCA analysis. The findings of PCA analysis would be dominated by bigger scaling factors if the data was not standardized before the analysis. In the case of GNI before scaling, the min and max values had a large distribution. It's also understandable that the Gross National Index (GNI) is an excellent predictor of a country's citizens' life expectancy and education expectancy. The more mothers die (mar.mor), the more children are born to young people (ado.birth). In addition, we can observe that there is a link between the percentage of women in parliament and the ratio of women to males in the workforce. This could imply that the greater the number of women in the workforce, the better their representation in parliament. 
 
