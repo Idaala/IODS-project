@@ -65,7 +65,7 @@ biplot(pca_human, cex = c(0.8, 1), col = c("grey40", "deeppink2"), xlab = pc_lab
 ```
 
 
-The first component accounts for 100 % of the variation. A small angle indicates high correlation. GNI appears to explain the majority of the first primary component. 
+The first component accounts for 100 % of the variation. A small angle indicates high correlation. GNI appears to explain the majority of the first primary component. I started by creating a PCA and biplotting it without scaling the data. We have observations in grey and correlation arrows in pink in our biplot. The principal components PC1 and PC2 determine where observations and arrows appear in our display.
 
 
 ## PCA on standardized human data 
@@ -105,6 +105,61 @@ biplot(pca_human1, cex = c(0.8, 1), col = c("grey40", "deeppink2"), xlab = pc_la
 
 ```
 
+Together, the two principal components account for 69% of the dataset's variance. The outcomes are distinctive. There are about 4 or 5 important components after scaling. Most of the discrepancies, I believe, are due to scaling and standardizing the data. If factors have a wide range of scale units, data normalization is required for PCA analysis. The findings of PCA analysis would be dominated by bigger scaling factors if the data was not standardized before the analysis. In the case of GNI before scaling, the min and max values had a large distribution. It's also understandable that the Gross National Index (GNI) is an excellent predictor of a country's citizens' life expectancy and education expectancy. The more mothers die (mar.mor), the more children are born to young people (ado.birth). In addition, we can observe that there is a link between the percentage of women in parliament and the ratio of women to males in the workforce. This could imply that the greater the number of women in the workforce, the better their representation in parliament. 
 
-The outcomes are distinctive. There are about 4 or 5 important components after scaling. Most of the discrepancies, I believe, are due to scaling and standardizing the data. If factors have a wide range of scale units, data normalization is required for PCA analysis. The findings of PCA analysis would be dominated by bigger scaling factors if the data was not standardized before the analysis. In the case of GNI before scaling, the min and max values had a large distribution. It's also understandable that the Gross National Index (GNI) is an excellent predictor of a country's citizens' life expectancy and education expectancy. The more mothers die (mar.mor), the more children are born to young people (ado.birth). In addition, we can observe that there is a link between the percentage of women in parliament and the ratio of women to males in the workforce. This could imply that the greater the number of women in the workforce, the better their representation in parliament. 
 
+## tea dataset 
+### Multiple Correspondence Analysis
+
+```{r}
+library(FactoMineR)
+library(magrittr)
+library(MASS)
+library(ggplot2)
+library(tidyr)
+library(corrplot)
+library(GGally)
+data(tea)
+str(tea)
+dim(tea)
+#The tea dataset has 300 observations and 36 variables.
+
+```
+
+```{r}
+# visualize the dataset
+#Because there are so many variables, it's easier to separate them. 
+
+tidyr::gather(tea[1:10]) %>% ggplot(aes(value)) + facet_wrap("key", scales = "free") + geom_bar() + theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 8))
+```
+
+```{r}
+tidyr::gather(tea[11:20]) %>% ggplot(aes(value)) + facet_wrap("key", scales = "free") + geom_bar() + theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 8))
+```
+
+```{r}
+tidyr::gather(tea[21:30]) %>% ggplot(aes(value)) + facet_wrap("key", scales = "free") + geom_bar() + theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 8))
+```
+
+We have logical variables such as "healthy" or "no healthy" in the data, as well as factor variables with varied degrees. MCA (Multiple Correspondence Analysis) is a qualitative data analysis method that is an extension of Correspondence Analysis (CA).
+MCA can be used to find patterns or organization in data, as well as to reduce the number of dimensions. 
+
+```{r}
+#I'll use fewer variables for the purpose of simplicity. 
+
+# column names to keep in the dataset
+keep_columns <- c("Tea", "How", "healthy", "sugar", "where", "lunch", "sex")
+
+# select the 'keep_columns' to create a new dataset
+tea_time <- dplyr::select(tea, one_of(keep_columns))
+# multiple correspondence analysis
+mca <- MCA(tea_time, graph = FALSE)
+
+# summary of the model
+summary(mca)
+
+# visualize MCA
+plot(mca, invisible=c("ind"), habillage = "quali")
+```
+
+The first two dimensions account for 27% of the variance. This is evident in our graph, where the majority of our groups cluster in the middle, with no strong relationship to any of the dimensions. However, we can make some crude interpretations. Earl Grey and sugar are associated. Maybe people who drink Earl Grey include sugar in their tea. Females associate tea with health. There don't appear to be any substantial connections between variables and dimensions. 
