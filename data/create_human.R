@@ -121,4 +121,6 @@ human <- select(human, -Country)
 #save the data
 write.table(human, file = "human.csv", sep = "\t", col.names = TRUE)
 
+install.packages("FactoMineR")
+
 
