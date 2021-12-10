@@ -49,17 +49,9 @@ ratsw <- RATS %>%
 
 
 
+write.csv(BPRSL, "data/bprs.csv", row.names = FALSE)
+write.csv(ratsw, "data/rats.csv", row.names = FALSE)
 
 
 
 
-
-Good things come in Summary graphs":
-
-# Number of weeks, baseline (week 0) included
-n <- BPRSL$week %>% unique() %>% length()
-
-Replace the above code by the following:
-
-# Number of subjects (per group):
-n <- 20
