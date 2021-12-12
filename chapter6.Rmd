@@ -1,4 +1,4 @@
-# 6. **Analysis of longitudinal data**
+# **6. Analysis of longitudinal data**
 
 The examples from Vehkalahti and Everitt's (2019) book Multivariate Analysis for the Behavioral Sciences will be repeated, but the data sets will be swapped between the chapters. Each male subject was scored on the brief psychiatric rating scale (BPRS) before therapy began (week 0) and then at weekly intervals for eight weeks. The BPRS rates the severity of 18 symptom components, including aggression, suspiciousness, hallucinations, and grandiosity, on a scale of one to seven (extremely severe). The scale is used to assess patients who may be suffering from schizophrenia. 
 
