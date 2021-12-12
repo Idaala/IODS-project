@@ -89,6 +89,8 @@ ggplot(RATSW, aes(x = Group, y = mean)) +
   scale_y_continuous(name = "mean(weight), weeks 1-8")
 ```
 
+## t-test and anova
+
 The groups are quite different after the outliers are removed. The graphs created earlier in this lesson show that there is a distinction between the three groups. An anova test is used to formally test the difference between the groups.
 The t-test used in the reference material (MABS) cannot be used since only two samples can be used in the t-test. However, t-test can be performed for each group separately. The data from the previous exercise is used without the outliers in the t-test.  
 
