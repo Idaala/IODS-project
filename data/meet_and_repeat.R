@@ -1,5 +1,7 @@
-
-
+#Ida Alakörkkö
+#12.12.2021
+#IODS data wrangling
+# Data is taken from the second edition of Multivariate Analysis for the Behavioral Sciences (Vehkalahti and Everitt, 2019). 
 
 # Read the BPRS data
 
@@ -46,7 +48,6 @@ ratsw <- RATS %>%
 
 #Now the subjects have multiple rows. In other words. Each individual was on one row in the wide tables; now, each individual is on multiple rows.
 #Long tables, on the other hand, have only one column for time information. 
-
 
 
 write.csv(BPRSL, "data/bprs.csv", row.names = FALSE)
